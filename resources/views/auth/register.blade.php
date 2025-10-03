@@ -1,9 +1,10 @@
 @extends('layouts.auth')
+@section('title-content', 'Register Page')
 @section('body-class', 'register-page')
 @section('content')
     <div class="register-box">
         <div class="register-logo">
-            <a href="../index2.html"><b>Admin</b>LTE</a>
+            <a href="{{ route('login') }}"><b>Admin</b>LTE</a>
         </div>
         <!-- /.register-logo -->
         <div class="card">
@@ -51,7 +52,7 @@
                 </form>
 
                 <p class="mb-0 text-center mt-2">
-                    <a href="login.html" class="text-center"> I already have a membership </a>
+                    <a href="{{route('login')}}" class="text-center"> I already have a membership </a>
                 </p>
             </div>
         </div>
