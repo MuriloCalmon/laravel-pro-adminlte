@@ -10,7 +10,14 @@
             </li>
             <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Home</a></li>
             <li class="nav-item d-none d-md-block"><a href="#" class="nav-link">Contact</a></li>
+            <li class="nav-item d-none d-md-block">
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-default btn-flat">Logout</button>
+                </form>
+            </li>
         </ul>
+
         <!--end::Start Navbar Links-->
         <!--begin::End Navbar Links-->
         <ul class="navbar-nav ms-auto">
