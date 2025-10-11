@@ -24,7 +24,7 @@
             <div class="mb-3">
                 <label class="form-label">Endereço</label>
                 <input type="address" name="address" class="form-control @error('address') is-invalid @enderror"
-                    value="{{ old('address') ?? $user->profile->address }}">
+                    value="{{ old('address') ?? $user->profile->address ?? '' }}">
                 @error('address')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -33,7 +33,5 @@
         <div class="card-footer">
             <button type="submit" class="btn btn-primary">Editar</button>
         </div>
-
-
     </form>
 </div>

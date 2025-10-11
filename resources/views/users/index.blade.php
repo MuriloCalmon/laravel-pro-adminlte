@@ -11,6 +11,14 @@
             </div>
         @endif
     @endsession
+
+    <form action="{{ route('user.index') }}" method="get" class="mb-3" style="width: 300px;">
+        <div class="input-group input-group-sm">
+            <input class="form-control" type="text" name="keyword" id="" placeholder="Pesquisa" value="{{ request('keyword') }}">
+
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
     <table class="table">
         <thead>
             <tr>
@@ -39,4 +47,6 @@
             @endforeach
         </tbody>
     </table>
+
+    {{ $users->links() }}
 @endsection

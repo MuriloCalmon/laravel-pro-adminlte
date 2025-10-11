@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        $users = User::query();
+
+        $users->when($request->keyword, function ($query, $keyword) {
+            $query->where('name', 'like', "%{$keyword}%")
+                ->orWhere('email', 'like', "%{$keyword}%");
+        });
+
+        $users = $users->paginate(10)->withQueryString();
         return view('users.index', compact('users'));
     }
 
@@ -32,8 +40,9 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        $user->load('profile');
-        return view('users.edit', compact('user'));
+        $user->load('profile', 'interest');
+        $roles = Role::all();
+        return view('users.edit', compact('user', 'roles'));
     }
 
     public function update(User $user, Request $request)
@@ -65,6 +74,32 @@ class UserController extends Controller
         );
 
         return redirect()->route('user.index')->with('success', 'Perfil do usuário atualizado com sucesso!');
+    }
+
+    public function updateInterests(User $user, Request $request)
+    {
+        $input = $request->validate([
+            'interests' => 'nullable|array',
+        ]);
+
+        $user->interest()->delete();
+        if (!empty($input['interests'])) {
+            $user->interest()->createMany($input['interests']);
+        }
+
+        return redirect()->route('user.index')->with('success', 'Intereses do usuário atualizado com sucesso!');
+
+    }
+
+    public function updateRoles(User $user, Request $request)
+    {
+        $input = $request->validate([
+            'roles' => 'required|array',
+        ]);
+
+        $user->roles()->sync($input['roles']);
+
+        return redirect()->route('user.index')->with('success', 'Papéis do usuário atualizado com sucesso!');
     }
 
     public function destroy(User $user)
